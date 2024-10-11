@@ -1,33 +1,17 @@
-//declarando a variavel x 
-let x = 300
-//declarando a variavel y
-let y = 200
-//declarando a variavel tamanhodabolinha
-let tamanhodabolinha = 40;
-//declarando a variavel v
-let v = 5;
-  
-let raio = tamanhodabolinha / 2;
+document.getElementById('buscar').addEventListener('click', function() {
+    const cidade = document.getElementById('cidade').value;
+    const apiKey = 'a0de4112c986f075455c735a7be1e780'; // Substitua pela sua chave da API
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${cidade}&appid=${apiKey}&lang=pt&units=metric`;
 
-
-function setup() {
-    createCanvas(600, 400);
-  }
-  
-  function draw() {
-    background(0);
-    
-    circle(x,y,tamanhodabolinha);
-    
-
- x += v;
-
-
-if(x + raio >width || x - raio <0 ){
-
-    v *= -1;
-
-}
- 
-
-  }
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const resultadoDiv = document.getElementById('resultado');
+            if (data.cod === 200) {
+                resultadoDiv.innerHTML = `Temperatura em ${data.name}: ${data.main.temp}°C`;
+            } else {
+                resultadoDiv.innerHTML = 'Cidade não encontrada!';
+            }
+        })
+        .catch(error => console.error('Erro:', error));
+});
